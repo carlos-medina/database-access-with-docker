@@ -14,7 +14,8 @@ Before creating a [*MySQL database*](https://hub.docker.com/_/mysql), create a n
 docker network create mysql-net
 ```
 
-Now you can run a version 8.0 MySQL container with *admin* as the root password.
+Now you can run a 8.0 version of a MySQL container with the name *some-mysql*, *admin* as the root password and connecting it to the newly created network.
 
 ```shell
 docker run --network mysql-net --rm --name some-mysql -e MYSQL_ROOT_PASSWORD=admin -d mysql:8.0
+```
