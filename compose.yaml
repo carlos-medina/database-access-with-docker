@@ -1,4 +1,14 @@
 services:
+  app:
+    image: golang:1.21.0-alpine3.18
+    container_name: go-app
+    working_dir: /usr/src/app
+    volumes:
+      - .:/usr/src/app
+    command: go run ./main.go
+    env_file: .env
+    networks:
+      - mysql-net
   db:
     image: mysql:8.0
     container_name: some-mysql

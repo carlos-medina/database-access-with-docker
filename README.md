@@ -22,7 +22,7 @@ In the *.env* file, we have the variable *MYSQL_ROOT_PASSWORD*. Its value is req
 MYSQL_ROOT_PASSWORD="admin"
 ```
 
-In the *compose.yaml* file, in regard our database, we have two important information: *services:db* and *networks:mysql-net*:
+In the *compose.yaml* file, regarding our database, we have two important information: *services:db* and *networks:mysql-net*:
 
 ```yaml
 services:
@@ -72,4 +72,69 @@ create database recordings;
 use recordings;
 source /create-tables.sql;
 select * from album;
+```
+
+## Run the code
+
+In the *.env* file, we also have the variables *DBUSER* and *DBPASS*. Their value is required to for our application to access the database.
+
+```env
+DBUSER="root"
+DBPASS="admin"
+```
+
+In the *compose.yaml* file, regarding our application, besides *networks* that was already covered, we also have *services:app*:
+
+```yaml
+services:
+  app:
+    image: golang:1.21.0-alpine3.18
+    container_name: go-app
+    working_dir: /usr/src/app
+    volumes:
+      - .:/usr/src/app
+    command: go run ./main.go
+    env_file: .env
+    networks:
+      - mysql-net
+```
+
+In *app*, we assign which go image from [dockerhub](https://hub.docker.com/) will be used, the container name, from which directory the command will be executed, which files will be copied from the host to the container, which command will be executed, the path to the .env file and which network the container is going to be connected to.
+
+Before running the app, there is only one change that you might do the the file *main.go*: On line 27, we have the struct key *Addr* and its value. If your *some-mysql* container's IP Address is different than *172.19.0.2:3306*, you have to change it to its correct value. In order for you to find its value, you can inspect it using the command *docker inspect*:
+
+```shell
+docker inspect some-mysql | grep IPAddress
+```
+
+If your container's IP Adress is, for instance, *172.28.0.2*, change the line 27 to
+
+```go
+Addr: "172.19.0.2:3306",
+```
+
+from
+
+```go
+Addr: "172.28.0.2:3306",
+```
+
+After the adjustments, run the command below in a terminal:
+
+```shell
+docker compose up app
+```
+
+You should see the following result:
+
+```shell
+[+] Running 1/0
+ ✔ Container go-app  Created                                                                                                                                                                     0.1s 
+Attaching to go-app
+go-app  | go: downloading github.com/go-sql-driver/mysql v1.7.1
+go-app  | Connected!
+go-app  | Albums found: [{1 Blue Train John Coltrane 56.99} {2 Giant Steps John Coltrane 63.99}]
+go-app  | Album found: {2 Giant Steps John Coltrane 63.99}
+go-app  | ID of added album: 5
+go-app exited with code 0
 ```
