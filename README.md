@@ -10,6 +10,10 @@ The goal of this tutorial is to replicate the Golang's tutorial but using [*dock
 
 You can clone this repo or manually download all its files to your computer.
 
+```shell
+git clone https://github.com/carlos-medina/database-access-with-docker.git
+```
+
 ## Set up a database
 
 In the *.env* file, we have the variable *MYSQL_ROOT_PASSWORD*. Its value is required to for both our application and our client to access the database.
