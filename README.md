@@ -63,7 +63,7 @@ docker cp ./create-tables.sql mysql-client:/create-tables.sql
 
 In mysql-client's container terminal, we execute the following commands to 1. create the database 2. use it 3. execute the SQL commands from the copyied file and 4. check if the table was successfully created with the given data:
 
-```shell
+```sql
 create database recordings;
 use recordings;
 source /create-tables.sql;
