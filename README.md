@@ -41,8 +41,31 @@ In *db*, we assign which mysql image from [dockerhub](https://hub.docker.com/) w
 
 In *mysql-net* we assing which driver will be used and the name of the network, which is the same used by our database.
 
-Finally, we can head to a terminal and run our databse:
+Finally, we can head to a terminal and run our database:
 
 ```shell
 docker compose up db
+```
+
+In a second terminal, we will create a container for the MySQL client:
+
+```shell
+docker run -it --network mysql-net --rm --name mysql-client mysql:8.0 mysql -hsome-mysql -uroot -p
+```
+
+In the container's terminal, we type the password atributed to the value *MYSQL_ROOT_PASSWORD* in our *.env* file, which is *admin*.
+
+In a third terminal, we will copy the file *create-table.sql* to our database container:
+
+```shell
+docker cp ./create-tables.sql mysql-client:/create-tables.sql
+```
+
+In mysql-client's container terminal, we execute the following commands to 1. create the database 2. use it 3. execute the SQL commands from the copyied file and 4. check if the table was successfully created with the given data:
+
+```shell
+create database recordings;
+use recordings;
+source /create-tables.sql;
+select * from album;
 ```
