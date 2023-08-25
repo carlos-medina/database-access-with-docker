@@ -1,0 +1,14 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: some-mysql
+    env_file: .env
+    ports:
+      - 3306:3306
+    networks:
+      - mysql-net
+
+networks:
+  mysql-net:
+    driver: bridge
+    name: mysql-net
