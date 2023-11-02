@@ -41,7 +41,7 @@ networks:
     name: mysql-net
 ```
 
-In *db*, we assign which mysql image from [dockerhub](https://hub.docker.com/) will be used, the container name, the path to the .env file so it can get the variable **MYSQL_ROOT_PASSWORD**, which port is going to be exposed and which network the container is going to be connected to. It is important to not use the default docker's *bridge* network because [docker's built-in DNS *does not apply* to this network](https://github.com/docker-library/mysql/issues/644).
+In *db*, we assign which mysql image from [dockerhub](https://hub.docker.com/) will be used, the container name, the path to the .env file so it can get the variable **MYSQL_ROOT_PASSWORD**, which port is going to be exposed and which network the container is going to be connected to. It is important not to use the default docker's *bridge* network because [docker's built-in DNS *does not apply* to this network](https://github.com/docker-library/mysql/issues/644).
 
 In *mysql-net* we assing which driver will be used and the name of the network, which is the same used by our database.
 
